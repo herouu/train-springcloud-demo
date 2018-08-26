@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-config-server/demo.iml" filepath="$PROJECT_DIR$/demo-eureka-config-server/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-bus-kafka/demo-eureka-bus-kafka.iml" filepath="$PROJECT_DIR$/demo-eureka-bus-kafka/demo-eureka-bus-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-bus-rabbitmq/demo-eureka-bus-rabbitmq.iml" filepath="$PROJECT_DIR$/demo-eureka-bus-rabbitmq/demo-eureka-bus-rabbitmq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-config-client/demo-eureka-config-client.iml" filepath="$PROJECT_DIR$/demo-eureka-config-client/demo-eureka-config-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-config-server/demo-eureka-config-server.iml" filepath="$PROJECT_DIR$/demo-eureka-config-server/demo-eureka-config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-consumer/demo-eureka-consumer.iml" filepath="$PROJECT_DIR$/demo-eureka-consumer/demo-eureka-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-consumer-final/demo-eureka-consumer-final.iml" filepath="$PROJECT_DIR$/demo-eureka-consumer-final/demo-eureka-consumer-final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-consumer-final-2/demo-eureka-consumer-final-2.iml" filepath="$PROJECT_DIR$/demo-eureka-consumer-final-2/demo-eureka-consumer-final-2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-produce/demo-eureka-produce.iml" filepath="$PROJECT_DIR$/demo-eureka-produce/demo-eureka-produce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-server/demo-eureka-server.iml" filepath="$PROJECT_DIR$/demo-eureka-server/demo-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo-eureka-simple-zuul/demo-eureka-simple-zuul.iml" filepath="$PROJECT_DIR$/demo-eureka-simple-zuul/demo-eureka-simple-zuul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/train-springcloud.iml" filepath="$PROJECT_DIR$/train-springcloud.iml" />
+    </modules>
+  </component>
+</project>

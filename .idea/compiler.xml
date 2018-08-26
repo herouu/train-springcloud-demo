@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="demo" />
+        <module name="demo-eureka-bus-kafka" />
+        <module name="demo-eureka-bus-rabbitmq" />
+        <module name="demo-eureka-config" />
+        <module name="demo-eureka-config-client" />
+        <module name="demo-eureka-config-server" />
+        <module name="demo-eureka-consumer" />
+        <module name="demo-eureka-consumer-final" />
+        <module name="demo-eureka-consumer-final-2" />
+        <module name="demo-eureka-produce" />
+        <module name="demo-eureka-server" />
+        <module name="demo-eureka-simple-zuul" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo" target="1.8" />
+      <module name="demo-eureka-bus-kafka" target="1.8" />
+      <module name="demo-eureka-bus-rabbitmq" target="1.8" />
+      <module name="demo-eureka-config" target="1.8" />
+      <module name="demo-eureka-config-client" target="1.8" />
+      <module name="demo-eureka-config-server" target="1.8" />
+      <module name="demo-eureka-consumer" target="1.8" />
+      <module name="demo-eureka-consumer-final" target="1.8" />
+      <module name="demo-eureka-consumer-final-2" target="1.8" />
+      <module name="demo-eureka-produce" target="1.8" />
+      <module name="demo-eureka-server" target="1.8" />
+      <module name="demo-eureka-simple-zuul" target="1.8" />
+      <module name="demo-eureka-zuul" target="1.8" />
+      <module name="train-springcloud" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

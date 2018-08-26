@@ -8,10 +8,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<modules>
-		<module>demo-eurake-consumer</module>
-		<module>demo-eurake-consumer-final</module>
-		<module>demo-eurake-produce</module>
-		<module>demo-eurake-server</module>
+		<module>demo-eureka-consumer</module>
+		<module>demo-eureka-consumer-final</module>
+		<module>demo-eureka-produce</module>
+		<module>demo-eureka-server</module>
+    <module>demo-eureka-consumer-final-2</module>
+    <module>demo-eureka-config-server</module>
+    <module>demo-eureka-config-client</module>
+    <module>demo-eureka-bus-kafka</module>
 	</modules>
 
 	<packaging>pom</packaging>
