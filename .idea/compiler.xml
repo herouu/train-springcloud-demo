@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="demo" />
+        <module name="demo (2)" />
         <module name="demo-eureka-bus-kafka" />
         <module name="demo-eureka-bus-rabbitmq" />
         <module name="demo-eureka-config" />
@@ -18,10 +19,20 @@
         <module name="demo-eureka-produce" />
         <module name="demo-eureka-server" />
         <module name="demo-eureka-simple-zuul" />
+        <module name="demo-eureka-springboot-admin" />
+        <module name="demo-eureka-turbine" />
+      </profile>
+      <profile name="Annotation profile for train-springcloud" enabled="true">
+        <sourceOutputDir name="../demo-eureka-config-client/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../demo-eureka-config-client/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="demo (1)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="demo" target="1.8" />
+      <module name="demo (1)" target="1.8" />
+      <module name="demo (2)" target="1.8" />
       <module name="demo-eureka-bus-kafka" target="1.8" />
       <module name="demo-eureka-bus-rabbitmq" target="1.8" />
       <module name="demo-eureka-config" target="1.8" />
@@ -33,6 +44,8 @@
       <module name="demo-eureka-produce" target="1.8" />
       <module name="demo-eureka-server" target="1.8" />
       <module name="demo-eureka-simple-zuul" target="1.8" />
+      <module name="demo-eureka-springboot-admin" target="1.8" />
+      <module name="demo-eureka-turbine" target="1.8" />
       <module name="demo-eureka-zuul" target="1.8" />
       <module name="train-springcloud" target="1.8" />
     </bytecodeTargetLevel>

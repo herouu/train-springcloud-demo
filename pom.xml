@@ -16,6 +16,10 @@
     <module>demo-eureka-config-server</module>
     <module>demo-eureka-config-client</module>
     <module>demo-eureka-bus-kafka</module>
+    <module>demo-eureka-springboot-admin</module>
+    <module>demo-eureka-turbine</module>
+    <module>demo-eureka-simple-zuul</module>
+    <module>demo-eureka-bus-rabbitmq</module>
 	</modules>
 
 	<packaging>pom</packaging>

@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DemoApplicationTests {
+public class DemoEurekaSpringbootAdminApplicationTests {
 
 	@Test
 	public void contextLoads() {
