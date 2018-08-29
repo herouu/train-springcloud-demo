@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/demo-eureka-simple-zuul/demo.iml" filepath="$PROJECT_DIR$/demo-eureka-simple-zuul/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demo-eureka-bus-kafka/demo (1).iml" filepath="$PROJECT_DIR$/demo-eureka-bus-kafka/demo (1).iml" />
-      <module fileurl="file://$PROJECT_DIR$/demo-eureka-config-client/demo (2).iml" filepath="$PROJECT_DIR$/demo-eureka-config-client/demo (2).iml" />
       <module fileurl="file://$PROJECT_DIR$/demo-eureka-bus-kafka/demo-eureka-bus-kafka.iml" filepath="$PROJECT_DIR$/demo-eureka-bus-kafka/demo-eureka-bus-kafka.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo-eureka-bus-rabbitmq/demo-eureka-bus-rabbitmq.iml" filepath="$PROJECT_DIR$/demo-eureka-bus-rabbitmq/demo-eureka-bus-rabbitmq.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo-eureka-config-client/demo-eureka-config-client.iml" filepath="$PROJECT_DIR$/demo-eureka-config-client/demo-eureka-config-client.iml" />
