@@ -5,7 +5,6 @@ spring:
 # eureka的各项配置可见EurekaXXXConfigBean。
 eureka:
   instance:
-    hostname: localhost
     prefer-ip-address: true
     leaseRenewalIntervalInSeconds: 5 # 心跳间隔，5秒
     leaseExpirationDurationInSeconds: 10  # 没有心跳的淘汰时间，10秒
@@ -17,9 +16,11 @@ eureka:
     fetchRegistry: false # eureka之间如果网络不稳定，客户端一般也会缓存了注册列表，因此eureka服务可以不缓存，我觉得更能确保eureka之间的一致。
       # registerWithEureka关闭后，defaultZone没有配置的必要。如果打开，即使配置为本机一样报错。
       # 也就是说defaultZone任何时候都没有配置为localhost的必要。这点上John的配置更好，永超和周立包括志朋的配置有点多余。
-      # 但是周立说的对，这个属性默认配置是http://localhost:8761/eureka，也就是当你没有用户名密码安全认证时，本机调试时，客户端可以不配置，
-      # 但对于server来说，这个默认没有什么作用。对于client来说，也只有调试的时候有点作用。
+    # 但是周立说的对，这个属性默认配置是http://localhost:8761/eureka，也就是当你没有用户名密码安全认证时，本机调试时，客户端可以不配置，
+    # 但对于server来说，这个默认没有什么作用。对于client来说，也只有调试的时候有点作用。
     # 但有一点很奇怪，既然默认了8761端口，为什么eureka server的默认端口要用8080而不是8761呢？
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka
   #      defaultZone: http://${security.user.name}:${security.user.password}@localhost:${server.port}/eureka # 本配置应删除。
   server:
     # 自我保护机制，默认true。打开后，心跳失败在15分钟内低于85%(renewalPercentThreshold)的服务，也不进行剔除。

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import cn.hutool.extra.spring.SpringUtil;
 import org.ff4j.FF4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +12,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ interface FeignService {
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
+@Import(SpringUtil.class)
 public class DemoConsumerApplication {
 
 
@@ -39,13 +42,12 @@ public class DemoConsumerApplication {
     }
 
 
+    @Autowired
+    FF4jInterceptor ff4jInterceptor;
+
     @Bean
-    public FF4j ff4j(LoadBalancerClient loadBalancerClient) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(FF4j.class);
-        FF4j ff4j = new FF4j();
-        FF4jInterceptor ff4jInterceptor = new FF4jInterceptor(ff4j, loadBalancerClient);
-        return (FF4j) enhancer.create(FF4j.class, ff4jInterceptor);
+    public FF4j ff4j() {
+        return (FF4j) Enhancer.create(FF4j.class, ff4jInterceptor);
     }
 }
 
