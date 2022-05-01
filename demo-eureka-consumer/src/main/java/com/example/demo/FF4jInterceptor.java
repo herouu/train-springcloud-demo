@@ -1,8 +1,6 @@
 package com.example.demo;
 
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.loadbalancer.Server;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -44,7 +42,6 @@ public class FF4jInterceptor implements MethodInterceptor {
 
     private String SERVICE_ID = "demo-eureka-produce-ff4j";
     private FF4j ff4j;
-    private ObjectMapper objectMapper = new ObjectMapper();
     private AtomicInteger nextServerCyclicCounter;
     private ScheduledExecutorService scheduledExecutorService;
     private volatile List<String> aliveServer = new ArrayList<>();
@@ -71,17 +68,17 @@ public class FF4jInterceptor implements MethodInterceptor {
     }
 
 
-    private String ipAddress() throws JsonProcessingException {
+    private String ipAddress() {
         ServiceInstance choose = loadBalancerClient.choose(SERVICE_ID);
-        if (Objects.isNull(choose)) {
-            List<ServiceInstance> instances = discoveryClient.getInstances(SERVICE_ID);
-            List<String> discoveryList = instances.stream().map(item -> item.getUri().toString()).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(discoveryList)) {
-                return chooseIpAddress(discoveryList);
-            }
+        if (Objects.isNull(null)) {
+//            List<ServiceInstance> instances = discoveryClient.getInstances(SERVICE_ID);
+//            List<String> discoveryList = instances.stream().map(item -> item.getUri().toString()).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(discoveryList)) {
+//                return chooseIpAddress(discoveryList);
+//            }
             return chooseIpAddress(ff4jConfigProperties.getIpAddress());
         }
-        log.info(objectMapper.writeValueAsString(choose));
+        log.info(JSONUtil.toJsonStr(choose));
         return choose.getUri().toString();
 
     }
@@ -106,12 +103,12 @@ public class FF4jInterceptor implements MethodInterceptor {
                     countDownLatch.countDown();
                 };
                 scheduledExecutorService.scheduleWithFixedDelay(runnable, 0, 30, TimeUnit.SECONDS);
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    // ignore
+                }
             }
-        }
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            //ignore
         }
         int serverCount = aliveServer.size();
         if (serverCount <= 0) {
