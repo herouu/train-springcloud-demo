@@ -3,7 +3,6 @@ package com.example.demo;
 import cn.hutool.json.JSONUtil;
 import com.netflix.loadbalancer.Server;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.ff4j.FF4j;
 import org.ff4j.web.jersey2.store.FeatureStoreHttp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,33 +18,28 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class FF4jInterceptor implements MethodInterceptor {
 
 
+    public static Boolean chooseNull = false;
     @Autowired
     FF4jConfigProperties ff4jConfigProperties;
-
     @Autowired
     LoadBalancerClient loadBalancerClient;
-
     @Autowired
     DiscoveryClient discoveryClient;
-
     private String SERVICE_ID = "demo-eureka-produce-ff4j";
     private FF4j ff4j;
     private AtomicInteger nextServerCyclicCounter;
-    private ScheduledExecutorService scheduledExecutorService;
+    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     private volatile List<String> aliveServer = new ArrayList<>();
-    private CountDownLatch countDownLatch = new CountDownLatch(1);
+    private volatile ScheduledFuture<?> scheduledFuture;
+
 
     public FF4jInterceptor() {
         this.ff4j = new FF4j();
@@ -70,13 +64,19 @@ public class FF4jInterceptor implements MethodInterceptor {
 
     private String ipAddress() {
         ServiceInstance choose = loadBalancerClient.choose(SERVICE_ID);
-        if (Objects.isNull(null)) {
+        if (chooseNull) {
+            choose = null;
+        }
+        if (Objects.isNull(choose)) {
 //            List<ServiceInstance> instances = discoveryClient.getInstances(SERVICE_ID);
 //            List<String> discoveryList = instances.stream().map(item -> item.getUri().toString()).collect(Collectors.toList());
 //            if (CollectionUtils.isNotEmpty(discoveryList)) {
 //                return chooseIpAddress(discoveryList);
 //            }
             return chooseIpAddress(ff4jConfigProperties.getIpAddress());
+        } else {
+            // clear service scheduled executor
+            clear();
         }
         log.info(JSONUtil.toJsonStr(choose));
         return choose.getUri().toString();
@@ -85,9 +85,9 @@ public class FF4jInterceptor implements MethodInterceptor {
 
 
     public String chooseIpAddress(List<String> servers) {
-        if (Objects.isNull(scheduledExecutorService)) {
+        if (Objects.isNull(scheduledFuture)) {
             synchronized (FF4jInterceptor.class) {
-                scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+                CountDownLatch countDownLatch = new CountDownLatch(1);
                 Runnable runnable = () -> {
                     List<String> filterResult = new ArrayList<>();
                     // filter died server
@@ -102,7 +102,7 @@ public class FF4jInterceptor implements MethodInterceptor {
                     log.info(JSONUtil.toJsonStr(aliveServer));
                     countDownLatch.countDown();
                 };
-                scheduledExecutorService.scheduleWithFixedDelay(runnable, 0, 30, TimeUnit.SECONDS);
+                scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
                 try {
                     countDownLatch.await();
                 } catch (InterruptedException e) {
@@ -116,6 +116,16 @@ public class FF4jInterceptor implements MethodInterceptor {
         }
         int nextServerIndex = incrementAndGetModulo(serverCount);
         return servers.get(nextServerIndex);
+    }
+
+    private void clear() {
+        if (Objects.nonNull(scheduledFuture)) {
+            synchronized (FF4jInterceptor.class) {
+                aliveServer.clear();
+                scheduledFuture.cancel(true);
+                scheduledFuture = null;
+            }
+        }
     }
 
     /**

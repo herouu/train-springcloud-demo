@@ -37,13 +37,12 @@ interface FeignService {
 public class DemoConsumerApplication {
 
 
+    @Autowired
+    FF4jInterceptor ff4jInterceptor;
+
     public static void main(String[] args) {
         SpringApplication.run(DemoConsumerApplication.class, args);
     }
-
-
-    @Autowired
-    FF4jInterceptor ff4jInterceptor;
 
     @Bean
     public FF4j ff4j() {
@@ -94,5 +93,15 @@ class ConsumerController {
     @GetMapping("/ff4j")
     public Object ff4j() {
         return ff4j.check("first");
+    }
+
+
+    @GetMapping("/changeNull")
+    public void chooseNull(Boolean flag) {
+        if (flag) {
+            FF4jInterceptor.chooseNull = true;
+            return;
+        }
+        FF4jInterceptor.chooseNull = false;
     }
 }
