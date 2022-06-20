@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import cn.hutool.extra.spring.SpringUtil;
+import feign.Logger;
 import org.ff4j.FF4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,20 +14,16 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-@FeignClient(value = "eureka-produce-demo", fallback = HystricFeignService.class)
+@FeignClient(value = "eureka-produce-demo")
 interface FeignService {
 
     @RequestMapping(value = "/produce")
-    List<Object> getUsers();
+    ResponseEntity<byte[]> getUsers();
 
 }
 
@@ -36,7 +33,6 @@ interface FeignService {
 @Import(SpringUtil.class)
 public class DemoConsumerApplication {
 
-
     @Autowired
     FF4jInterceptor ff4jInterceptor;
 
@@ -45,19 +41,13 @@ public class DemoConsumerApplication {
     }
 
     @Bean
+    public Logger.Level feignLoggerLevel() {
+        return Logger.Level.HEADERS;
+    }
+
+    @Bean
     public FF4j ff4j() {
         return (FF4j) Enhancer.create(FF4j.class, ff4jInterceptor);
-    }
-}
-
-@Component
-class HystricFeignService implements FeignService {
-
-    @Override
-    public List<Object> getUsers() {
-        ArrayList<Object> userList = new ArrayList<>();
-        userList.add("produce server is dead! consumer hystric is open!");
-        return userList;
     }
 }
 
@@ -75,12 +65,10 @@ class ConsumerController {
 
     @GetMapping("/consumer")
     public Object getUserList() {
-        List<Object> users = feignService.getUsers();
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("username", "consumer1");
-        map.put("phone", "13000000001");
-        users.add(map);
-        return users;
+        long l = System.currentTimeMillis();
+        ResponseEntity<byte[]> user = feignService.getUsers();
+        System.out.println(System.currentTimeMillis() - l);
+        return user;
     }
 
 

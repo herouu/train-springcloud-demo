@@ -1,0 +1,23 @@
+server:
+  port: 12002
+
+spring:
+  application:
+    name: eureka-consumer-demo
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:50001/eureka/
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: false
+      mime-type: text/html,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: false

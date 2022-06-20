@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!-- 属性文件:在properties文件中找到对应的配置项 -->
+    <springProperty scope="context" name="logging.path" source="logging.path"/>
+    <contextName>xiaoming</contextName>
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出（配色）：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(%-5level) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%t]){faint} %clr(%logger.%method){cyan} %clr(\(line:%line\)){yellow} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <logger name="com.netflix.loadbalancer" level="info" />
+    <logger name="com.netflix.discovery" level="info" />
+    <logger name="com.example.demo.FeignService" level="DEBUG" />
+
+    <root level="info">
+        <appender-ref ref="consoleLog"/>
+    </root>
+</configuration>
