@@ -46,11 +46,11 @@ class ProduceController {
             user.setNo("what" + i);
             o.add(user);
         }
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(7000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         System.out.println(System.currentTimeMillis() - l);
         return o;
     }

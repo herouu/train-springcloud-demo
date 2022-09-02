@@ -16,8 +16,8 @@ feign:
         readTimeout: 30000
   compression:
     request:
-      enabled: false
+      enabled: true
       mime-type: text/html,application/xml,application/json
       min-request-size: 2048
     response:
-      enabled: false
+      enabled: true

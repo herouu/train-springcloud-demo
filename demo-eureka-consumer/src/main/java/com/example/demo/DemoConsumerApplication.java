@@ -1,8 +1,16 @@
 package com.example.demo;
 
+import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import feign.Logger;
+import feign.Response;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.ff4j.FF4j;
+import org.ff4j.utils.IOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,16 +22,20 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.*;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 @FeignClient(value = "eureka-produce-demo")
 interface FeignService {
 
     @RequestMapping(value = "/produce")
-    ResponseEntity<byte[]> getUsers();
+    Response getUsers();
 
 }
 
@@ -63,14 +75,45 @@ class ConsumerController {
     @Autowired
     FF4j ff4j;
 
-    @GetMapping("/consumer")
-    public Object getUserList() {
-        long l = System.currentTimeMillis();
-        ResponseEntity<byte[]> user = feignService.getUsers();
-        System.out.println(System.currentTimeMillis() - l);
-        return user;
+    JsonFactory jsonFactory = new JsonFactory();
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    public static byte[] uncompress(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return null;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        try {
+            GZIPInputStream ungzip = new GZIPInputStream(in);
+            byte[] buffer = new byte[256];
+            int n;
+            while ((n = ungzip.read(buffer)) >= 0) {
+                out.write(buffer, 0, n);
+            }
+        } catch (IOException e) {
+
+        }
+
+        return out.toByteArray();
     }
 
+    @GetMapping("/consumer")
+    public Object getUserList() throws IOException {
+        long l = System.currentTimeMillis();
+        Response user = feignService.getUsers();
+        InputStream inputStream = user.body().asInputStream();
+        System.out.println(System.currentTimeMillis() - l);
+        GZIPInputStream gzipOutputStream = new GZIPInputStream(inputStream, 5120);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(5120);
+        IOUtils.copy(gzipOutputStream, outputStream);
+        byte[] bytes = outputStream.toByteArray();
+        List<?> o = objectMapper.readValue(bytes, new TypeReference<List>() {
+        });
+        System.out.println(System.currentTimeMillis() - l);
+        return o;
+    }
 
     @GetMapping("/loadBalance")
     public Object loadBalance() {
